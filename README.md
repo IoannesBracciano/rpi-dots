@@ -46,9 +46,23 @@ my_pins = {
 Dots.init(my_pins)
 ```
 
-Notice that `my_pins['db']` array starts with pin DB7 (the least significant)
-4 'db' pins will initialize the LCD to 4-bit mode, while 8 will initialize to
-8 bit-mode
+Your dictionary should not ommit any of these entries, or a KeyError will be
+raised. Notice that `my_pins['db']` array starts with pin DB7 (data most
+significant bit) 4 'db' pins will initialize the LCD to 4-bit mode, while 8 will
+initialize it to 8 bit-mode
 
+## Versioning
+### version 0.7 (**current**)
+An early stage of the module that allows to:
+* Display text on the LCD screen
+* Split the text into unlimited lines and lines into unlimited cells
+* Format cell widths using tab stops
+* Scroll the screen up and down, lines and cells left and right, once or
+  every number of seconds
+
+---
+
+Dots - By Ioannes Bracciano
+[Read the license]()
 
 
