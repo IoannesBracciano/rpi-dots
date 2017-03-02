@@ -19,7 +19,6 @@ necessary dependency modules
 
 ## Usage
 Connect your LCD to the RPi GPIO pins and initialize Dots using:
-
 ```python
 # Define custom pins
 pins = {
@@ -32,7 +31,6 @@ pins = {
 # Call this before any other Dots function
 Dots.init( pins )
 ```
-
 replacing the pin numbers according to your setup (using BCM pin numbering).
 You can also call `Dots.init()` without any arguments and connect the LCD to the
 default pins, as defined by the HD44780  module ([read the corerponding wiki
@@ -53,27 +51,27 @@ These lines and cells can scroll independently to reveal overflown content (the
 grayed out text in the figure)
 
 ### Displaying text on the screen
-You can display text on the screen calling the display() function:
+You can display text on the screen calling the `display()` function:
 ```python
 Dots.display("Hello there!")
 ```
-This will result in the text "Hello there!" being displayed at the first line
-on the screen. To change line, simply use the '\n' character (line break) in
+This will result in the text `"Hello there!"` being displayed at the first line
+on the screen. To change line, simply use the `'\n'` character (line break) in
 your string:
 ```python
 Dots.dipslay("Hello\nthere!")
 ```
-This will display "Hello" at the first line and "there!" at the second. You can
+This will display `"Hello"` at the first line and `"there!"` at the second. You can
 have as many line breaks as you want. Notice that each time you call display,
 the text on the screen is being replaced with the new one.
 
-To split a line into cells, use the '\t' character (tab stop) in your string:
+To split a line into cells, use the `'\t'` character (tab stop) in your string:
 ```python
 Dots.display("Hello\tthere!")
 ```
 This will divide the first line in two cells. Dots automatically distributes
 the widths of the two cells to span the whole line on the screen:
-![Automatic Tab Stops](auto_tabs.jpg)
+![Automatic Tab Stops](auto_tab_stops.jpg)
 
 ## Versioning
 #### version 0.7 (**current**)
