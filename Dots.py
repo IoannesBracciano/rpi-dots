@@ -79,14 +79,15 @@ class _Buffer:
 
   # Returns the _Line of text at index
   # If index is left blank, _current_line_index is used
-  # If index exceeds line_count(), it circles back to the beginning
+  # If index exceeds line_count(), it returns None
   def line(self, index=None):
     if self._lines:
       index = self._current_line_index if index == None else index
       #return self._lines[ index % self.line_count() ]
       if index < self.line_count():
         return self._lines[ index ]
-    else: return None
+    
+    return None
 
 
   # Returns the number of lines in the buffer
@@ -98,7 +99,7 @@ class _Buffer:
   # Returns False otherwise
   def is_displayed(self, line):
     index = self._lines.index(line)
-    if index and index in range(self._current_line_index,\
+    if index is not None and index in range(self._current_line_index,\
                                 self._current_line_index + LCD_LINES):
       return True
     else: return False
@@ -110,16 +111,15 @@ class _Buffer:
     return position in range(self.line_count())
 
 
-  # Sets internal line index to 'position' if 0 <= 'position' < line_count()
-  # If 'position' <= 0 scrolls to the top and if 'position' >= line_count()
-  # scrolls to the bottom
+  # Scrolls to the line at 'position'
+  # If 'position' is negative it scrolls to the first line, whereas
+  # if 'position' is equal or greater line_count(), it scrolls to the last
+  # _Line
   def scroll_to(self, position):
     if self.scrolls_to(position):
       self._current_line_index = position
-      return True
     else:
       self.scroll_top() if position < 0 else self.scroll_bottom()
-      return False
 
 
   # Scrolls the contents down by 'offset' lines
@@ -226,8 +226,11 @@ class _Line:
   def cell(self, index=None):
     if self._cells:
       index = self._current_cell_index if index == None else index
-      return self._cells[ index % self.cell_count() ]
-    else: return None
+      # return self._cells[ index % self.cell_count() ]
+      if index < self.cell_count():
+        return self._cells[ index ]
+    
+    return None
 
 
   # Returns the number of cells in the last parsed line of text
@@ -272,26 +275,27 @@ class _Line:
     return position in range(self.cell_count())
 
 
-  # Scrolls to the line at 'position'
-  # If 'position' is negative it scrolls to the top, whereas if 'position'
-  # exceeds the index of the last line, it scrolls to the end
+  # Scrolls to the cell at 'position'
+  # If 'position' is negative it scrolls to the first cell, whereas
+  # if 'position' is equal or grater than cell_count(), it scrolls to the last
+  # cell
   def scroll_to(self, position):
     if self.scrolls_to(position):
       self._current_cell_index = position
-      return True
     else:
       self.scroll_start() if position < 0 else self.scroll_end()
-      return False
 
 
   # Scrolls the contents to the left by 'offset' cells
   def scroll_left(self, offset=1):
-    return self.scroll_to( self._current_cell_index + offset )
+    self.scroll_to( self._current_cell_index + offset )
+    return self.scrolls_to( self._current_cell_index + offset )
 
 
   # Scrolls the contents to the right by 'offset' cells
   def scroll_right(self, offset=1):
-    return self.scroll_to( self._current_cell_index - offset )
+    self.scroll_to( self._current_cell_index - offset )
+    return self.scrolls_to( self._current_cell_index - offset )
 
 
   # Scrolls to the start of the line
@@ -310,11 +314,11 @@ class _Line:
 
     if self._cells:
       for cell in self._cells[self._current_cell_index:]:
-        if len(formatted) >= 16: break
+        if len(formatted) >= CHARS_PER_LINE: break
         formatted += str(cell)
         self._last_visible_cell_index = self._cells.index(cell)
 
-      return formatted
+      return formatted[:CHARS_PER_LINE]
 
 
   # Resets the internal cell index
@@ -371,12 +375,15 @@ class _Line:
     return self._format_contents() or _Line.__name__
 
 
-  # Overloads operator.len() to return the _Line's cell_count()
+  # Returns the _Line's cumulative sum of its cell widths
   def __len__(self):
-    return self.line_count()
+    length = 0
+    for cell in self._cells:
+      length += cell.get_width()
+    return length
 
 
-  # Overloads operator [] to access a cell in the line
+  # Makes it possible to access a _Cell by applying indexing on the _Line
   def __getitem__(self, index):
     return self.cell(index)
 
@@ -397,8 +404,9 @@ class _Cell:
 
   # Sets the width of the cell
   def set_width(self, width):
-    if width < 1 or width > 16:
-      raise ValueError("Width of cell should be between 1 and 16 characters")
+    if width < 1 or width > CHARS_PER_LINE:
+      raise ValueError("Width of cell should be between 1 and {} characters"\
+                                                      .format(CHARS_PER_LINE))
 
     self._width = width
     self.scroll_to(0)
@@ -430,20 +438,20 @@ class _Cell:
   def scroll_to(self, position):
     if self.scrolls_to(position):
       self._scroll_offset = position
-      return True
     elif len(self.text) > self.get_width():
       self.scroll_start() if position < 0 else self.scroll_end()
-      return False
 
 
   # Scrolls the contents to the left by 'offset' characters
   def scroll_left(self, offset=1):
-    return self.scroll_to( self._scroll_offset + offset )
+    self.scroll_to( self._scroll_offset + offset )
+    return self.scrolls_to( self._scroll_offset + offset )
 
 
   # Scrolls the contents to the right by 'offset' characters
   def scroll_right(self, offset=1):
-    return self.scroll_to( self._scroll_offset - offset )
+    self.scroll_to( self._scroll_offset - offset )
+    return self.scrolls_to( self._scroll_offset - offset )
 
 
   # Scrolls to the start of the text
