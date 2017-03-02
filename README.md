@@ -23,6 +23,7 @@ Connect your LCD to the RPi GPIO pins and initialize Dots using:
 ```python
 # Define custom pins
 pins = {
+    # 'rw' pin not yet supported
     'rs':    21
     'e' :    22,
     'db':   [4, 25, 24, 23] }
@@ -36,6 +37,16 @@ replacing the pin numbers according to your setup (using BCM pin numbering).
 You can also call `Dots.init()` without any arguments and connect the LCD to the
 default pins, as defined by the HD44780  module ([read the corerponding wiki
 for more information][1])
+
+### Conceptual background
+*This section assumes text is displayed on a dot pattern liquid crystal display
+with 2 lines of text of 16 characters each (default for Dots)*
+
+The idea behind Dots, is that text can be split into multiple lines and each
+line can be split into multiple cells. You can define more than 2 lines and
+lines can span more than 16 characters, as the figure shows:
+
+![Image](https://drive.google.com/file/d/0B6VEcVfpSGh-TTVqdEhNOTRxSzg/view?usp=sharing)
 
 
 ## Versioning
