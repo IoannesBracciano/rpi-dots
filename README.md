@@ -18,41 +18,25 @@ appropriately. Don't forget to also copy thi ifc folder that contains the
 necessary dependency modules
 
 ## Usage
-You should initialize the module before doing anything else using:
-
-```python
-Dots.init()
-```
-
-Dots assumes that you have connected your screen to the following RPi pins
-(following the BCM numbering):
-
-```python
-# Default pins
-PIN_DEFS = {
-    'rs':    21 if GPIO.RPI_REVISION==1 else 27,
-    'e' :    22,
-    'db':   [4, 25, 24, 23] }
-```
-
-These defaults come from the HD44780 module, and mostly work for RPi model B,
-but you can override them by providing your own dictionary to the init function:
+Connect your LCD to the RPi GPIO pins and initialize Dots using:
 
 ```python
 # Define custom pins
-my_pins = {
-    'rs':    12
-    'e' :    13,
-    'db':   [17, 16, 15, 14] }
+pins = {
+    'rs':    21
+    'e' :    22,
+    'db':   [4, 25, 24, 23] }
 
-# Feed them into the init function
-Dots.init(my_pins)
+# Pass them to Dots.init()
+# Call this before any other Dots function
+Dots.init( pins )
 ```
 
-Your dictionary should not ommit any of these entries, or a KeyError will be
-raised. Notice that `my_pins['db']` array starts with pin DB7 (data most
-significant bit) and goes all the way down to DB4 (for 4-bit mode) or DB0 (data
-least significant bit, for 8 bit-mode).
+replacing the pin numbers according to your setup (using BCM pin numbering).
+You can also call `Dots.init()` without any arguments and connect the LCD to the
+default pins, as defined by the HD44780  module ([read the corerponding wiki
+for more information][1])
+
 
 ## Versioning
 ### version 0.7 (**current**)
