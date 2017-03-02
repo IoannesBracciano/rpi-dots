@@ -10,7 +10,8 @@ also greatly extending the capabilities of it. Briefly, you can:
 * Load extended dot patterns and draw them on the screen (coming soon)
 
 ## Prerequisities
-This module makes use of the HD44780 module, found also in my rpi-ifc repo
+This module makes use of the pi's GPIO module, as well as the HD44780 module
+that can also be found in my [rpi-ifc repo](https://github.com/IoannesBracciano/rpi-dots).
 
 ## Installation
 Just grab the files, put them in the same directory as your project and import
@@ -33,8 +34,7 @@ Dots.init( pins )
 ```
 replacing the pin numbers according to your setup (using BCM pin numbering).
 You can also call `Dots.init()` without any arguments and connect the LCD to the
-default pins, as defined by the HD44780  module ([read the corerponding wiki
-for more information][1])
+default pins, as defined by the HD44780  module ([read the wiki]())
 
 *The sections that follow assume text is displayed on a dot pattern liquid
 crystal display with 2 lines of text of 16 characters each (default for Dots)*
@@ -78,8 +78,8 @@ An early stage of the module that allows to:
 
 ---
 
-Author and Maintainer: [Ioannes Bracciano]
+Author and Maintainer: [Ioannes Bracciano](mailto:john.bracciano@hotmail.gr)
 
-[Read the license]()
+[Read the license](LICENSE)
 
 
