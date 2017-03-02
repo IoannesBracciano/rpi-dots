@@ -46,7 +46,7 @@ The idea behind Dots, is that text can be split into multiple lines and each
 line can be split into multiple cells. You can define more than 2 lines and
 lines can span more than 16 characters, as the figure shows:
 
-![Dots Concept](rpi-dots/lcd_concept.jpg)
+![Dots Concept](lcd_concept.jpg)
 
 
 ## Versioning
