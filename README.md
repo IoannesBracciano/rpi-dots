@@ -39,8 +39,9 @@ default pins, as defined by the HD44780  module ([read the corerponding wiki
 for more information][1])
 
 ### Conceptual background
-*This section assumes text is displayed on a dot pattern liquid crystal display
-with 2 lines of text of 16 characters each (default for Dots)*
+*This section and the coming ones assume text is displayed on a dot pattern
+liquid crystal display with 2 lines of text of 16 characters each (default for
+Dots)*
 
 The idea behind Dots, is that text can be split into multiple lines and each
 line can be split into multiple cells. You can define more than 2 lines and
@@ -48,9 +49,34 @@ lines can span more than 16 characters, as the figure shows:
 
 ![Dots Concept](lcd_concept.jpg)
 
+These lines and cells can scroll independently to reveal overflown content (the
+grayed out text in the figure)
+
+### Displaying text on the screen
+You can display text on the screen calling the display() function:
+```python
+Dots.display("Hello there!")
+```
+This will result in the text "Hello there!" being displayed at the first line
+on the screen. To change line, simply use the '\n' character (line break) in
+your string:
+```python
+Dots.dipslay("Hello\nthere!")
+```
+This will display "Hello" at the first line and "there!" at the second. You can
+have as many line breaks as you want. Notice that each time you call display,
+the text on the screen is being replaced with the new one.
+
+To split a line into cells, use the '\t' character (tab stop) in your string:
+```python
+Dots.display("Hello\tthere!")
+```
+This will divide the first line in two cells. Dots automatically distributes
+the widths of the two cells to span the whole line on the screen:
+![Automatic Tab Stops](auto_tabs.jpg)
 
 ## Versioning
-### version 0.7 (**current**)
+#### version 0.7 (**current**)
 An early stage of the module that allows to:
 * Display text on the LCD screen
 * Split the text into unlimited lines and lines into unlimited cells
