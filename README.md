@@ -11,11 +11,11 @@ also greatly extending the capabilities of it. Briefly, you can:
 
 ## Prerequisities
 This module makes use of the pi's GPIO module, as well as the HD44780 module
-that can also be found in my [rpi-ifc repo](https://github.com/IoannesBracciano/rpi-dots).
+that can also be found in my [rpi-ifc repo](https://github.com/IoannesBracciano/rpi-ifc).
 
 ## Installation
 Just grab the files, put them in the same directory as your project and import
-appropriately. Don't forget to also copy thi ifc folder that contains the
+appropriately. Don't forget to also copy the ifc folder that contains the
 necessary dependency modules
 
 ## Usage
@@ -41,17 +41,17 @@ crystal display with 2 lines of text of 16 characters each (default for Dots)*
 
 ### Displaying text on the screen
 You can display text on the screen calling the `display()` function:
+
 ```python
 Dots.display("Hello there!")
 ```
-
 ![Display text](lcd_1.jpg)
 
 To change line, simply use the `'\n'` character (line break) in your string:
+
 ```python
 Dots.dipslay("Hello\nthere!")
 ```
-
 ![Display two lines](lcd_2.jpg)
 
 Notice that each time you call display, the text on the screen is being
@@ -61,11 +61,62 @@ To split a line into cells, use the `'\t'` character (tab stop) in your string:
 ```python
 Dots.display("Hello\tthere!")
 ```
-
 ![Split lines into two cells](lcd_3.jpg)
 
 Dots automatically distributes the widths of the two cells (they are displayed
 with different background color) to span the whole line on the screen.
+
+### Formatting cells
+Cell widths can be controlled by setting the tab stop positions. In the example
+above, we've divided the line in two cells by introducing one tab stop ('\t').
+We can reposition it by calling:
+
+```python
+Dots.set_tab_stops([10])
+```
+![Setting tab stops for one line](lcd_4.jpg)
+
+Now the first cell occupies 10 characters on the screen, while the second one
+occupies the remaining 6 characters to the end of the line. If you have multiple
+lines, setting tab stops this way will affect all of them:
+
+```python
+Dots.display("""
+3\tDoukissis Plakentias\t  4'
+3\tAirport\t 16'
+""")
+
+Dots.set_tab_stops([2,12])
+```
+![Setting tab stops for multiple lines](lcd_5.jpg)
+
+If you need to divide each line differently, you can do this by specifying an
+array of arrays of tab stops for each line you display:
+
+```python
+Dots.display("""
+3\tAirport\t 13'
+3\tNon-stop
+""")
+
+Dots.set_tab_stops([ [2,12], [2] ])
+```
+![Setting tab stops for multiple  lines seperately](lcd_6.jpg)
+
+In this case it doesn't really matter the order in which you specify the inner
+arrays, because Dots can assume that the 2-element array corresponds to the
+line with two tab stops, while the 1-element array corresponds to the line with
+one tab stop. You can also set the tab stop positions for specific lines only:
+
+```python
+Dots.display("""
+3\tAirport\t 10'
+Terminal
+""")
+
+Dots.line(0).set_tab_stops([2,12])
+```
+![Setting tab stops for specific lines only](lcd_7.jpg)
 
 ## Versioning
 #### version 0.7 (**current**)
