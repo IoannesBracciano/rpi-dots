@@ -120,7 +120,7 @@ Dots.line(0).set_tab_stops([2,12])
 ![Setting tab stops for specific lines only](img/lcd_7.jpg)
 
 ### Scrolling contents
-Now your string spans more lines that the screen has. You can scroll through
+Now your string spans more lines than the screen has. You can scroll through
 them easily:
 
 ```python
@@ -145,15 +145,46 @@ Similarly, to scroll the contents of a line cell by cell:
 Dots.display("Cells\tthat\tcarry\ton\tbeyond\tline")
 Dots.set_tab_stops([6,11,16,19,28])
 ```
-![Scrolling contents of line](img/lcd_10.jpg)
+![Scrolling contents of a line](img/lcd_10.jpg)
 
 ```python
-Dots.scroll( Dots.line() ).to(3).once()
+Dots.scroll( Dots.line() ).left(3).once()
 ```
-![Scrolling contents of line](img/lcd_11.jpg)
+![Scrolling contents of a line](img/lcd_11.jpg)
 
 `Dots.line()`, when called without arguments, will always return the top most
 line that is currently displayed on the screen (the current line).
+
+Finally, consider the example of the train departures above:
+
+```python
+Dots.display("""
+3\tDoukissis Plakentias\t  4'
+3\tAirport\t 16'
+""")
+
+Dots.set_tab_stops([2,12])
+```
+![Setting tab stops for multiple lines](img/lcd_5.jpg)
+
+The second cell of the first (and current) line contains some hidden content
+that can be revealed by scrolling the cell to the left:
+
+```python
+# Get a reference to the current line
+current = Dots.line()
+Dots.scroll(current.cell(1)).left(10).once()
+```
+![Scrolling contents of a cell](lcd_12.jpg)
+
+### Scroller objects
+`scroll()` returns appropriate scroller objects that are used to scroll the
+contents of cells, lines, or the entire screen.
+
+```python
+# Get a reference to a screen scroller
+screen_scroller = Dots.scroll()
+```
 
 ## Versioning
 #### version 0.7 (**current**)
