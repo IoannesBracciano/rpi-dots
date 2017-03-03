@@ -45,23 +45,24 @@ You can display text on the screen calling the `display()` function:
 ```python
 Dots.display("Hello there!")
 ```
-![Display text](lcd_1.jpg)
+![Display text](img/lcd_1.jpg)
 
 To change line, simply use the `'\n'` character (line break) in your string:
 
 ```python
 Dots.dipslay("Hello\nthere!")
 ```
-![Display two lines](lcd_2.jpg)
+![Display two lines](img/lcd_2.jpg)
 
 Notice that each time you call display, the text on the screen is being
 replaced with the new one.
 
 To split a line into cells, use the `'\t'` character (tab stop) in your string:
+
 ```python
 Dots.display("Hello\tthere!")
 ```
-![Split lines into two cells](lcd_3.jpg)
+![Split lines into two cells](img/lcd_3.jpg)
 
 Dots automatically distributes the widths of the two cells (they are displayed
 with different background color) to span the whole line on the screen.
@@ -74,7 +75,7 @@ We can reposition it by calling:
 ```python
 Dots.set_tab_stops([10])
 ```
-![Setting tab stops for one line](lcd_4.jpg)
+![Setting tab stops for one line](img/lcd_4.jpg)
 
 Now the first cell occupies 10 characters on the screen, while the second one
 occupies the remaining 6 characters to the end of the line. If you have multiple
@@ -88,7 +89,7 @@ Dots.display("""
 
 Dots.set_tab_stops([2,12])
 ```
-![Setting tab stops for multiple lines](lcd_5.jpg)
+![Setting tab stops for multiple lines](img/lcd_5.jpg)
 
 If you need to divide each line differently, you can do this by specifying an
 array of arrays of tab stops for each line you display:
@@ -101,7 +102,7 @@ Dots.display("""
 
 Dots.set_tab_stops([ [2,12], [2] ])
 ```
-![Setting tab stops for multiple  lines seperately](lcd_6.jpg)
+![Setting tab stops for multiple  lines seperately](img/lcd_6.jpg)
 
 In this case it doesn't really matter the order in which you specify the inner
 arrays, because Dots can assume that the 2-element array corresponds to the
@@ -116,7 +117,43 @@ Terminal
 
 Dots.line(0).set_tab_stops([2,12])
 ```
-![Setting tab stops for specific lines only](lcd_7.jpg)
+![Setting tab stops for specific lines only](img/lcd_7.jpg)
+
+### Scrolling contents
+Now your string spans more lines that the screen has. You can scroll through
+them easily:
+
+```python
+Dots.display("""
+On your back
+with your racks
+as he stacks
+your load
+""")
+```
+![Scrolling through lines](img/lcd_8.jpg)
+```python
+Dots.scroll().down(2).once()
+```
+![Scrolling through lines](img/lcd_9.jpg)
+
+You may also `scroll().up()` a number of lines.
+
+Similarly, to scroll the contents of a line cell by cell:
+
+```python
+Dots.display("Cells\tthat\tcarry\ton\tbeyond\tline")
+Dots.set_tab_stops([6,11,16,19,28])
+```
+![Scrolling contents of line](img/lcd_10.jpg)
+
+```python
+Dots.scroll( Dots.line() ).to(3).once()
+```
+![Scrolling contents of line](img/lcd_11.jpg)
+
+`Dots.line()`, when called without arguments, will always return the top most
+line that is currently displayed on the screen (the current line).
 
 ## Versioning
 #### version 0.7 (**current**)
