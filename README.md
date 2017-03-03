@@ -175,7 +175,7 @@ that can be revealed by scrolling the cell to the left:
 current = Dots.line()
 Dots.scroll(current.cell(1)).left(10).once()
 ```
-![Scrolling contents of a cell](lcd_12.jpg)
+![Scrolling contents of a cell](img/lcd_12.jpg)
 
 ### Scroller objects
 `scroll()` returns appropriate scroller objects that are used to scroll the
