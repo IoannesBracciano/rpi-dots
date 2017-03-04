@@ -171,20 +171,36 @@ The second cell of the first (and current) line contains some hidden content
 that can be revealed by scrolling the cell to the left:
 
 ```python
-# Get a reference to the current line
-current = Dots.line()
-Dots.scroll(current.cell(1)).left(10).once()
+# Get a reference to the cell
+cell = Dots.line().cell(1)
+#Scroll its contents left by 10 characters
+Dots.scroll(cell).left(10).once()
 ```
 ![Scrolling contents of a cell](img/lcd_12.jpg)
 
-### Scroller objects
-`scroll()` returns appropriate scroller objects that are used to scroll the
-contents of cells, lines, or the entire screen.
+Instead of `once()` you can also call `every()` or `bounce()` at the end to
+start an automated scrolling of the contents, specifying a time interval between
+each scroll:
 
 ```python
-# Get a reference to a screen scroller
-screen_scroller = Dots.scroll()
+# Will scroll the contents to the right by 1 character, every half second
+# while obtaining a reference to the scroller
+scroller = Dots.scroll(cell).right().every(0.5)
+# The contents will scroll until they've reached the start,
+# but you can stop the scrolling anytime by calling stop()
+scroller.stop()
+# You may later start the scrolling again
+# Bounce will scroll the contents indefinitely, reversing the scrolling
+# direction every time it hits a boundary (it bounces back and forth)
+scroller.bounce(0.5)
 ```
+
+## Contributing
+You are welcome to fork the repository and apply your own cool ideas. I have
+very, very little experience on testing, so anybody who wants to write a
+robust testing suite for the library is more than welcome to do so! Lastly,
+you can create an issue if you've used the library and stumbled upon a bug, or
+if you want to suggest a feature to be implemented in the next versions.
 
 ## Versioning
 #### version 0.7 (**current**)
