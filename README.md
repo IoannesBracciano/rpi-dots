@@ -34,7 +34,7 @@ Dots.init( pins )
 ```
 replacing the pin numbers according to your setup (using BCM pin numbering).
 You can also call `Dots.init()` without any arguments and connect the LCD to the
-default pins, as defined by the HD44780  module ([read the wiki]())
+default pins, as defined by the HD44780  module ([read the wiki](https://github.com/IoannesBracciano/rpi-ifc/wiki/HD44780))
 
 *The sections that follow assume text is displayed on a dot pattern liquid
 crystal display with 2 lines of text of 16 characters each (default for Dots)*
