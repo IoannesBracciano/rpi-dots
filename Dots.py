@@ -1,52 +1,59 @@
-'''
-  Copyright (c) 2017 Ioannes Bracciano
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-'''
-
-
-# This python module greatly extends the functionality of
-# 16x1 or 16x2 dot character LCD displays, using the HD44780
-# controller or one alike, as well as it provides an easy way
-# to interact with it. Briefly you can:
-#   * Display text on the LCD screen (duh)
-#   * Split the text into unlimited lines and lines into unlimited cells
-#   * Format cell widths using tab stops
-#   * Scroll through all of the contents with ease and in many different ways
-#   * Load extended dot patterns and draw them on the screen (coming soon)
+# Copyright (c) 2017 Ioannes Bracciano
 #
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# Author and Maintainer
-# Ioannes Bracciano <john.bracciano@gmail.com>
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 
-# CONSTANTS
-################################################################################
+'''
+  This python module greatly extends the functionality of
+  16x1 or 16x2 dot character LCD displays, using the HD44780
+  controller or one alike, as well as it provides an easy way
+  to interact with it. Briefly you can:
+    * Display text on the LCD screen (duh)
+    * Split the text into unlimited lines and lines into unlimited cells
+    * Format cell widths using tab stops
+    * Scroll through all of the contents with ease and in many different ways
+    * Load extended dot patterns and draw them on the screen (coming soon)
+
+
+  Author and Maintainer
+  Ioannes Bracciano <john.bracciano@gmail.com>
+'''
+
+
+# Constants and Flags
+# -------------------
 
 # Current module version
-VERSION = 0.7
+VERSION = '0.7.1'
 
 # Defines the number of lines on the LCD screen
 LCD_LINES = 2
 
 # Defines the number of characters per line
 CHARS_PER_LINE = 16
+
+# Flag to make cursor visible via the `cursor` function
+CURSOR_VISIBLE = 0x01
+
+# Flag to make cursor blink via the `cursor` function
+CURSOR_BLINK = 0x02
+
 
 # _Buffer is a helper class to control the module's
 # internal text buffer. It parses the given text to lines
@@ -779,9 +786,9 @@ def init(pins=None, lines=None):
   LCD_LINES = lines or LCD_LINES
 
   HD44780.init(pins)
-  HD44780.set_lines(LCD_LINES)
-  HD44780.reconfigure()
-  HD44780.turn_display_on()
+  HD44780.set_function( bit_mode = len(HD44780.__pins['db']),
+                        num_lines = LCD_LINES   )
+  HD44780.display_on()
 
 
 # Clears the display of all text
@@ -824,9 +831,9 @@ def format(tab_stops):
 
 
 # Shows or hides the cursor on the screen
-def set_cursor_visibility(visible):
-  HD44780.cursor = visible
-  HD44780.turn_display_on()
+def cursor(flags):
+  HD44780.display_on( flags & CURSOR_VISIBLE,
+                      flags & CURSOR_BLINK )
 
 
 # Returns a specific _Scroller instance acording to the type of the parameter
